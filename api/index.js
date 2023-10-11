@@ -1,0 +1,42 @@
+const express = require('express')
+const axios = require('axios');
+const cheerio = require('cheerio');
+const cors = require('cors');
+const app = express();
+
+const PORT = 3000;
+
+const straitTimesUrl = 'https://www.straitstimes.com/'
+const source = "The Strait Times"
+app.use(cors());
+
+axios(straitTimesUrl)
+    .then(response => {
+        const html = response.data
+        const $ = cheerio.load(html)
+        const articles = []
+
+        $('.card-title', html).each(function(){
+            const title = $(this).text().replace("\n", " ").trim()
+            const url = $(this).find('a').attr('href')
+            
+            articles.push({
+                title,
+                url,
+                source: source
+            })
+        })
+        console.log(articles)
+    }).catch(error => console.log(error))
+
+// Client side
+app.listen(PORT, () => console.log(`Little Smol Dot API running on PORT ${PORT}!`))
+
+
+// Server side
+app.get('/news', (req, res) => {
+    res.setHeader('content-type', 'application/json');
+    res.json(articles)
+});
+
+
