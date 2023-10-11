@@ -1,7 +1,6 @@
 const express = require("express");
 const axios = require("axios");
 const cheerio = require("cheerio");
-const cors = require("cors");
 const app = express();
 
 const PORT = process.env.PORT || 3000;
@@ -9,7 +8,6 @@ const PORT = process.env.PORT || 3000;
 const straitTimesUrl = "https://www.straitstimes.com/";
 const source = "The Strait Times";
 const articles = [];
-app.use(cors());
 
 axios(straitTimesUrl)
   .then((response) => {
@@ -40,6 +38,6 @@ app.get("/", (req, res) => {
 
 app.get("/news", (req, res) => {
   res.setHeader("content-type", "application/json");
-  res.setHeader("Cache-Control", "s-max-age=1, stale-while-revalidate");
+//   res.setHeader("Cache-Control", "s-max-age=1, stale-while-revalidate");
   res.json(articles);
 });
