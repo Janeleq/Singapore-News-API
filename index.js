@@ -34,6 +34,10 @@ axios(straitTimesUrl)
 app.listen(PORT, () => console.log(`Little Smol Dot API running on PORT ${PORT}!`));
 
 // Server side
+app.get("/", (req, res) => {
+    res.json("Welcome to Singapore News API")
+})
+
 app.get("/news", (req, res) => {
   res.setHeader("content-type", "application/json");
   res.setHeader("Cache-Control", "s-max-age=1, stale-while-revalidate");
